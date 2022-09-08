@@ -1,0 +1,10 @@
+.buttons {
+  display: flex;
+  float: right;
+  flex-flow: column;
+}
+
+.buttons button {
+  width: 10vw;
+  height: 10vh;
+}

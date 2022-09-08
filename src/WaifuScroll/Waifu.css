@@ -1,0 +1,15 @@
+.waifu{
+    bottom: 1vh;
+    left: 1vh;
+    pointer-events: none;
+    height: 98vh;
+    width: auto;
+    border-radius: 12px;
+    border: 2px solid black;
+}
+
+.waifu-container{
+    display: flex;
+    float: left;
+}
+

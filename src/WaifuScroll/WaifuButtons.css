@@ -1,0 +1,10 @@
+.waifu-buttons{
+  display: flex;
+  /* justify-content: space-around; */
+  flex-flow: column;
+  margin-left: 1vw;
+}
+.waifu-buttons button{
+  width: 10vw;
+  height: 10vh;
+}
