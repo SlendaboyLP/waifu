@@ -1,77 +1,69 @@
 import React from 'react'
 import { useEffect , useState} from 'react'
 import './Waifu.css'
+import {allTags} from './Types'
 
-export default function Waifu() {
+export default function Waifu({setCurrentWaifu}:any) {
 
-  const [waifu, setWaifu] = useState<any>();
+
+  const [waifu, setWaifu] = useState<any>(null);
   const [keys, setKeys] = useState<any>({});
-  const [lastWaifu, setLastWaifu] = useState<any>();
-  const [nextWaifu, setNextWaifu] = useState<any>();
+  const [lastWaifu, setLastWaifu] = useState<any>(null);
+  const [nextWaifu, setNextWaifu] = useState<any>(null);
 
-
-  type nsfwTags = 
-    | "ass"
-    | "hentai"
-    | "milf"
-    | "oral"
-    | "paizuri"
-    | "ecchi"
-    | "ero";
-
-  type sfwTags = 
-    | "uniform"
-    | "maid"
-    | "waifu"
-    | "marin-kitagawa"
-    | "mori-calliope"
-    | "raiden-shogun"
-    | "oppai"
-    | "selfies";
-
-  type allTags = nsfwTags | sfwTags
-
-
-  const getWaifu = () => {
+  const getWaifu = () => { 
     fetch('https://api.waifu.im/random')
       .then(response => response.json())
       .then(data => setWaifu(data));
   }
 
-  useEffect(getWaifu, [])
-
-  const keyUpdate = (key: string, isPressed: boolean)=>{
-    
-    setKeys({...keys, [key]: isPressed});
+  const getNextWaifu = () => { 
+    fetch('https://api.waifu.im/random')
+      .then(response => response.json())
+      .then(data => setNextWaifu(data));
   }
 
-  useEffect(() => {
-    let l1 = document.addEventListener("keydown", e => keyUpdate(e.key, true));
-    let l2 = document.addEventListener("keyup" , e => keyUpdate(e.key, false));
+  useEffect(getWaifu, [])
 
-    return () => {
-      document.removeEventListener("keydown",l1 as any);
-      document.removeEventListener("keyup", l2 as any);
-    }
+  useEffect(() => {
+    const keyUpdate = (key: string, isPressed: boolean) => setKeys({...keys, [key]: isPressed})
+    let l1 = document.addEventListener("keydown", e => keyUpdate(e.key, true));
+    return () => document.removeEventListener("keydown",l1 as any);
   }, [])
+
+  useEffect(() => setCurrentWaifu(waifu), [waifu])
 
   useEffect(() => {
       if(keys["ArrowDown"]) {
-        setLastWaifu(waifu)
-        setWaifu(null)
-        getWaifu()
+
+        if(nextWaifu != null){
+          setLastWaifu(waifu)
+          setWaifu(nextWaifu)
+          getNextWaifu()
+        }
+        else{
+          setLastWaifu(waifu)
+          setWaifu(null)
+          getWaifu()
+        }
+
+        keys["ArrowDown"] = false
       }
 
       if(keys["ArrowUp"]) {
+        if(lastWaifu === null) return
+        setNextWaifu(waifu)
         setWaifu(lastWaifu)
         setLastWaifu(null)
-        
+
+
+        keys["ArrowUp"] = false
       }
   }, [keys])
 
    return (
     <div className='waifu-container'>
-      {waifu ? <img src={waifu.images[0].url} className='waifu'/> : 'Loading...'}
+      {waifu ? <img src={waifu.images[0].url} className='waifu'alt=''/> : 'Loading...'}
     </div>
   )
 }
