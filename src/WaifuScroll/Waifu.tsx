@@ -6,21 +6,22 @@ import {allTags} from './Types'
 export default function Waifu({setCurrentWaifu}:any) {
 
 
+  let   url = 'https://api.waifu.im/random'
   const [waifu, setWaifu] = useState<any>(null);
   const [keys, setKeys] = useState<any>({});
   const [lastWaifu, setLastWaifu] = useState<any>(null);
   const [nextWaifu, setNextWaifu] = useState<any>(null);
 
   const getWaifu = () => { 
-    fetch('https://api.waifu.im/random')
+    fetch(url)
       .then(response => response.json())
-      .then(data => setWaifu(data));
+      .then(data => setWaifu(data.images[0]));
   }
 
   const getNextWaifu = () => { 
-    fetch('https://api.waifu.im/random')
+    fetch(url)
       .then(response => response.json())
-      .then(data => setNextWaifu(data));
+      .then(data => setNextWaifu(data.images[0]));
   }
 
   useEffect(getWaifu, [])
@@ -63,7 +64,7 @@ export default function Waifu({setCurrentWaifu}:any) {
 
    return (
     <div className='waifu-container'>
-      {waifu ? <img src={waifu.images[0].url} className='waifu'alt=''/> : 'Loading...'}
+      {waifu ? <img src={waifu.url} className='waifu'alt=''/> : 'Loading...'}
     </div>
   )
 }

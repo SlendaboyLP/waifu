@@ -45,9 +45,9 @@ function App() {
 
   return (
     <div className='UI'>
-      <WaifuButtons currentWaifu={currentWaifu}/>
+      <WaifuButtons currentWaifu={currentWaifu} user={user}/>
       <Waifu setCurrentWaifu={setCurrentWaifu}/>
-      <UIButtons/>
+      <UIButtons user={user}/>
     </div>
   );
 }
