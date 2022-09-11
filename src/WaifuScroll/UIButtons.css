@@ -3,8 +3,10 @@
   flex-direction: column;
 }
 
-.buttons button {
+.buttons button , .btn{
   width: 10vw;
   height: 10vh;
+  background-color: grey;
   
 }
+

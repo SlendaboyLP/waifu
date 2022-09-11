@@ -1,12 +1,14 @@
 import React from 'react'
 import './UIButtons.css'
+import {Link} from 'react-router-dom'
 
-export default function UIButtons({user}:any) {
+export default function UIButtons() {
   return (
     <div className='buttons'>
-      <button>Start</button>
-      <button onClick={() => console.table(user.collection)}>Collection</button>
-      <button>Settings</button>
+
+      <Link to="/" className='btn'>Start</Link>
+      <Link to="/Collection" className='btn'>Collection</Link>
+      <Link to="/Settings" className='btn'>Settings</Link>
     </div>
   )
 }

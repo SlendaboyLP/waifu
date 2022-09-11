@@ -1,13 +1,13 @@
 import React from 'react';
-import logo from './logo.svg';
 import './reset.css'
 import './App.css';
 import Waifu from './WaifuScroll/Waifu';
 import UIButtons from './WaifuScroll/UIButtons';
 import WaifuButtons from './WaifuScroll/WaifuButtons';
 import { useEffect, useState } from 'react';
-
+import {Route, Routes} from 'react-router-dom'
 import uuid4 from "uuid4";
+import Settings from './Settings/Settings';
 
 function App() {
 
@@ -44,10 +44,28 @@ function App() {
   });
 
   return (
+
     <div className='UI'>
-      <WaifuButtons currentWaifu={currentWaifu} user={user}/>
-      <Waifu setCurrentWaifu={setCurrentWaifu}/>
-      <UIButtons user={user}/>
+      <Routes>
+        <Route path="/" element={
+          <>
+            <WaifuButtons currentWaifu={currentWaifu} user={user}/>
+            <Waifu setCurrentWaifu={setCurrentWaifu} user={user}/>
+            <UIButtons/>
+          </>
+        }/>
+
+        <Route path="/Collection" element={
+          <>
+          </>
+        }/>
+
+        <Route path="/Settings" element={
+            <Settings user={user} setUser={setUser}/>
+        }/>
+
+      </Routes>
+      
     </div>
   );
 }

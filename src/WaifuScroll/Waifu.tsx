@@ -3,23 +3,23 @@ import { useEffect , useState} from 'react'
 import './Waifu.css'
 import {allTags} from './Types'
 
-export default function Waifu({setCurrentWaifu}:any) {
+export default function Waifu({setCurrentWaifu, user}:any) {
 
 
-  let   url = 'https://api.waifu.im/random'
+  const defaultUrl = 'https://api.waifu.im/random'
   const [waifu, setWaifu] = useState<any>(null);
   const [keys, setKeys] = useState<any>({});
   const [lastWaifu, setLastWaifu] = useState<any>(null);
   const [nextWaifu, setNextWaifu] = useState<any>(null);
 
   const getWaifu = () => { 
-    fetch(url)
+    fetch(buildQueryString())
       .then(response => response.json())
       .then(data => setWaifu(data.images[0]));
   }
 
   const getNextWaifu = () => { 
-    fetch(url)
+    fetch(buildQueryString())
       .then(response => response.json())
       .then(data => setNextWaifu(data.images[0]));
   }
@@ -41,6 +41,7 @@ export default function Waifu({setCurrentWaifu}:any) {
           setLastWaifu(waifu)
           setWaifu(nextWaifu)
           getNextWaifu()
+
         }
         else{
           setLastWaifu(waifu)
@@ -61,6 +62,35 @@ export default function Waifu({setCurrentWaifu}:any) {
         keys["ArrowUp"] = false
       }
   }, [keys])
+
+  const buildQueryString = () => {
+    const [ nsfwTags, sfwTags, girls] = user.tags
+    let url = defaultUrl
+
+    url += "?is_nsfw=" + user.settings.is_nsfw
+
+    if(user.settings.is_nsfw){
+      for(const tag in nsfwTags){
+        if(!nsfwTags[tag]) continue
+        url += "&selected_tags=" + tag
+      }
+    }
+
+    if(!user.settings.is_nsfw){
+      for(const tag in sfwTags){
+        if(!sfwTags[tag]) continue
+        url += "&selected_tags=" + tag
+      }
+    }
+
+
+
+
+
+    console.log(url)
+    return url
+
+  }
 
    return (
     <div className='waifu-container'>
