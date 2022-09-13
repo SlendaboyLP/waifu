@@ -14,21 +14,28 @@ function App() {
   const [currentWaifu, setCurrentWaifu] = useState<any>(null);
   const [user, setUser] = useState<any>({
     userId: uuid4(),
-    collection: [],
+    collection: {
+      nsfw_collection: [],
+      sfw_collection: [],
+    },
     settings: {
       is_nsfw: false,
+      sfw_collection_public: false,
+      nsfw_collection_public: false,
     },
     tags: [
       {
-        ass: false,
-        hentai: false,
-        milf: false,
-        oral: false,
-        paizuri: false,
-        ecchi: false,
-        ero: false,
-      },
-      {
+
+        //nsfw tags will overwrite is_nsfw
+        ass: false, 
+        hentai: false, 
+        milf: false, 
+        oral: false, 
+        paizuri: false, 
+        ecchi: false, 
+        ero: false, 
+
+        //sfw tags will not overwrite is_nsfw
         uniform: false,
         maid: false,
         waifu: true,

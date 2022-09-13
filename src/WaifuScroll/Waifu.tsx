@@ -24,6 +24,8 @@ export default function Waifu({setCurrentWaifu, user}:any) {
       .then(data => setNextWaifu(data.images[0]));
   }
 
+  useEffect(() => console.log(waifu), [waifu])
+
   useEffect(getWaifu, [])
 
   useEffect(() => {
@@ -64,37 +66,26 @@ export default function Waifu({setCurrentWaifu, user}:any) {
   }, [keys])
 
   const buildQueryString = () => {
-    const [ nsfwTags, sfwTags, girls] = user.tags
-    let url = defaultUrl
+    const [ Tags, girls] = user.tags
+    let url = defaultUrl + "?is_nsfw=" + user.settings.is_nsfw
 
-    url += "?is_nsfw=" + user.settings.is_nsfw
 
-    if(user.settings.is_nsfw){
-      for(const tag in nsfwTags){
-        if(!nsfwTags[tag]) continue
-        url += "&selected_tags=" + tag
-      }
+    for(const tag in Tags){
+      if(!Tags[tag]) continue
+      url += "&selected_tags=" + tag
     }
 
-    if(!user.settings.is_nsfw){
-      for(const tag in sfwTags){
-        if(!sfwTags[tag]) continue
-        url += "&selected_tags=" + tag
-      }
+    for(const girl in girls){
+      if(!girls[girl]) continue
+      url += "&selected_tags=" + girl
     }
-
-
-
-
-
-    console.log(url)
     return url
 
   }
 
    return (
     <div className='waifu-container'>
-      {waifu ? <img src={waifu.url} className='waifu'alt=''/> : 'Loading...'}
+      {waifu ? <img src={waifu.url} className='waifu'alt='' style={{border: "2px solid " + waifu.dominant_color}}/> : 'Loading...'}
     </div>
   )
 }

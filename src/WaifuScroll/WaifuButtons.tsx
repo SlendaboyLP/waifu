@@ -17,3 +17,4 @@ export default function WaifuButtons({currentWaifu, user}:any) {
    </div>
   )
 }
+
